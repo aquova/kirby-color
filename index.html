@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kirby Color Editor</title>
+        <meta charset="utf-8">
+        <link href="style.css" type="text/css" rel="stylesheet">
+        <script src="jscolor.js"></script>
+    </head>
+    <body>
+        <h1>The Kirby Color Editor!</h1>
+        <select>
+          <option value="kam">Kirby and the Amazing Mirror</option>
+        </select>
+        <div id="palette">
+            <button class="jscolor {valueElement:null,value:'f2a7db'}" onchange="changeColor(0, this.jscolor)" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'f198c4'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'e779a4'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'ce5474'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'a7303d'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'5b1814'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'f8d5f5'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'eb3b83'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'c52a54'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'a6212f'}" style="width:20px; height:20px;"></button>
+            <button class="jscolor {valueElement:null,value:'000000'}" style="width:20px; height:20px;"></button>
+        </div>
+        <br/>
+        <canvas id="kirbyCanvas" width='320' height='288'>Your browswer does not support the HTML5 canvas.</canvas>
+        <div id="footer">
+            <p>&copy; 2018 Austin Bricker</p>
+            <p>Powered by JS Color</p>
+            <p>Source code</p>
+        </div>
+        <script src="palette.js"></script>
+    </body>
+</html>
