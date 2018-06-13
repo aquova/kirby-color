@@ -15,6 +15,10 @@ var originalPalette = [
 
 var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
+ctx.msImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
 
 var img = new Image();
 img.crossOrigin = "Anonymous";
@@ -30,6 +34,7 @@ function drawKirby() {
     imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     // Global array of original pixel values
     originalPixelArray = imageData.data;
+    console.log(imageData)
 }
 
 function changeColor(oldIndex, newColor) {
@@ -43,7 +48,6 @@ function changeColor(oldIndex, newColor) {
         var r = newPixelArray[index];
         var g = newPixelArray[index + 1];
         var b = newPixelArray[index + 2];
-        console.log(r);
 
         if (r == originalPalette[oldIndex][0] && g == originalPalette[oldIndex][1] && b == originalPalette[oldIndex[2]]) {
             newPixelArray[index] = newColor.rgb[0];
