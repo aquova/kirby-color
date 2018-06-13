@@ -17,7 +17,8 @@ var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
 
 var img = new Image();
-img.src = "./kirby.png";
+img.crossOrigin = "Anonymous";
+img.src = "http://austinbricker.com/KCE/kirby.png";
 
 img.onload = function() {
     drawKirby();
@@ -26,13 +27,13 @@ img.onload = function() {
 function drawKirby() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     // Global array of original pixel values
     originalPixelArray = imageData.data;
 }
 
 function changeColor(oldIndex, newColor) {
-    console.log(newColor);
+    console.log(newColor.rgb);
     // Pixel array is four parts: R, G, B, alpha
     var length = originalPixelArray.length / 4;
     var newPixelArray = originalPixelArray;
@@ -42,11 +43,12 @@ function changeColor(oldIndex, newColor) {
         var r = newPixelArray[index];
         var g = newPixelArray[index + 1];
         var b = newPixelArray[index + 2];
+        console.log(r);
 
         if (r == originalPalette[oldIndex][0] && g == originalPalette[oldIndex][1] && b == originalPalette[oldIndex[2]]) {
-            newPixelArray[index] = newColor[0];
-            newPixelArray[index + 1] = newColor[1];
-            newPixelArray[index + 2] = newColor[2];
+            newPixelArray[index] = newColor.rgb[0];
+            newPixelArray[index + 1] = newColor.rgb[1];
+            newPixelArray[index + 2] = newColor.rgb[2];
         }
     }
     ctx.putImageData(imageData, 0, 0);
