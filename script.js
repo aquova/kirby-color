@@ -7,7 +7,7 @@ var originalPalette = [
     [181, 32,  57 ],
     [99,  16,  16 ],
     [255, 211, 247],
-    [235, 59,  131],
+    [255, 24,  132],
     [214, 0,   82 ],
     [181, 0,   41 ],
     [0,   0,   0  ]
@@ -45,9 +45,9 @@ function changeColor(oldIndex, newColor) {
     for (var i = 0; i < length; i++) {
         var index = 4 * i;
 
-        var r = newPixelArray[index];
-        var g = newPixelArray[index + 1];
-        var b = newPixelArray[index + 2];
+        var r = originalPixelArray[index];
+        var g = originalPixelArray[index + 1];
+        var b = originalPixelArray[index + 2];
 
         if (r == originalPalette[oldIndex][0] && g == originalPalette[oldIndex][1] && b == originalPalette[oldIndex][2]) {
             newPixelArray[index] = newColor.rgb[0];
@@ -59,3 +59,25 @@ function changeColor(oldIndex, newColor) {
     ctx.putImageData(imageData, 0, 0);
     ctx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 }
+
+function readFile(evt) {
+    var f = evt.target.files[0];
+    if (!f) {
+        alert("Failed to read file");
+    }
+    else if (f.name.split('.').pop() != 'gba') {
+        alert(f.name + " is not a .gba file");
+    }
+    else {
+        var fr = new FileReader();
+        fr.onload = function(e) {
+            var contents = e.target.result
+        }
+        var blob = f.slice(0x4BB12C, 0x4BB13C)
+        fr.readAsBinaryString(blob);
+        console.log(fr)
+        console.log(fr.result)
+    }
+}
+
+document.getElementById('fileinput').addEventListener('change', readFile, false)
