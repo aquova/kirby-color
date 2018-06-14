@@ -17,3 +17,9 @@ canvas {
 select {
     margin: 10px 0;
 }
+
+.jscolor {
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+}

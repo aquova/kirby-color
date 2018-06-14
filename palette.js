@@ -1,15 +1,15 @@
 var originalPalette = [
 //   R    G    B
-    [242, 167, 219],
-    [241, 152, 196],
-    [231, 121, 164],
-    [206, 84,  116],
-    [167, 48,  61 ],
-    [91,  24,  20 ],
-    [248, 213, 245],
+    [255, 162, 222],
+    [255, 146, 198],
+    [247, 113, 165],
+    [222, 73,  115],
+    [181, 32,  57 ],
+    [99,  16,  16 ],
+    [255, 211, 247],
     [235, 59,  131],
-    [197, 42,  84 ],
-    [166, 33,  47 ],
+    [214, 0,   82 ],
+    [181, 0,   41 ],
     [0,   0,   0  ]
 ];
 
@@ -30,18 +30,18 @@ img.onload = function() {
 
 function drawKirby() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    imageData = ctx.getImageData(0, 0, img.width, img.height);
+    ctx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+
     // Global array of original pixel values
-    originalPixelArray = imageData.data;
-    console.log(imageData)
+    originalPixelArray = Uint8ClampedArray.from(imageData.data)
 }
 
 function changeColor(oldIndex, newColor) {
-    console.log(newColor.rgb);
-    // Pixel array is four parts: R, G, B, alpha
+    // Pixel array is four parts: R, G, B, A
     var length = originalPixelArray.length / 4;
-    var newPixelArray = originalPixelArray;
+    var newPixelArray = Uint8ClampedArray.from(imageData.data)
     for (var i = 0; i < length; i++) {
         var index = 4 * i;
 
@@ -49,11 +49,13 @@ function changeColor(oldIndex, newColor) {
         var g = newPixelArray[index + 1];
         var b = newPixelArray[index + 2];
 
-        if (r == originalPalette[oldIndex][0] && g == originalPalette[oldIndex][1] && b == originalPalette[oldIndex[2]]) {
+        if (r == originalPalette[oldIndex][0] && g == originalPalette[oldIndex][1] && b == originalPalette[oldIndex][2]) {
             newPixelArray[index] = newColor.rgb[0];
             newPixelArray[index + 1] = newColor.rgb[1];
             newPixelArray[index + 2] = newColor.rgb[2];
         }
     }
+    imageData.data.set(newPixelArray)
     ctx.putImageData(imageData, 0, 0);
+    ctx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 }
