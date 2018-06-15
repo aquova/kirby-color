@@ -1,16 +1,16 @@
 var originalPalette = [
 //   R    G    B
+    [0,   0,   0  ],
+    [255, 211, 247],
     [255, 162, 222],
     [255, 146, 198],
     [247, 113, 165],
     [222, 73,  115],
     [181, 32,  57 ],
     [99,  16,  16 ],
-    [255, 211, 247],
     [255, 24,  132],
     [214, 0,   82 ],
-    [181, 0,   41 ],
-    [0,   0,   0  ]
+    [181, 0,   41 ]
 ];
 
 var canvas = document.getElementById('kirbyCanvas');
@@ -71,13 +71,63 @@ function readFile(evt) {
     else {
         var fr = new FileReader();
         fr.onload = function(e) {
-            var contents = e.target.result
+            colorButton.disabled = false
+            name = f.name.split('.')[0] + "_new.gba"
+            var arrayBuffer = fr.result
+            rom = new Uint8Array(arrayBuffer)
         }
-        var blob = f.slice(0x4BB12C, 0x4BB13C)
-        fr.readAsBinaryString(blob);
-        console.log(fr)
-        console.log(fr.result)
+        fr.readAsArrayBuffer(f);
     }
 }
+
+function rewriteColor(evt) {
+    saveButton.disabled = false
+    var colors = document.getElementsByClassName('jscolor')
+    for (var i = 0; i < colors.length; i++) {
+        var hex = parseInt(colors[i].value, 16)
+        var gba = rgb2gba(hex)
+        var first = (gba >> 8) & 0xFF
+        var second = gba & 0xFF
+
+        rom[0x4bb12e + (2 * i)] = second
+        rom[0x4bb12e + (2 * i) + 1] = first
+    }
+}
+
+function writeFile(evt) {
+    var a = document.createElement("a")
+    a.download = name
+    var blob = new Blob([rom], {
+        type: 'text/plain'
+    })
+    a.href = URL.createObjectURL(blob);
+    document.body.appendChild(a)
+    a.click()
+    colorButton.disabled = true
+    saveButton.disabled = true
+    document.body.removeChild(a)
+}
+
+function rgb2gba(c) {
+    var r = (c & 0xFF0000) >> 16
+    var g = (c & 0x00FF00) >> 8
+    var b = (c & 0x0000FF)
+
+    var r15 = Math.round(r * 31 / 255)
+    var g15 = Math.round(g * 31 / 255)
+    var b15 = Math.round(b * 31 / 255)
+
+    var result = (b15 << 10) | (g15 << 5) | (r15)
+    return result
+}
+
+var name;
+var rom;
+
+var saveButton = document.getElementById('save')
+saveButton.addEventListener('click', writeFile)
+
+var colorButton = document.getElementById('color')
+colorButton.addEventListener('click', rewriteColor)
 
 document.getElementById('fileinput').addEventListener('change', readFile, false)
