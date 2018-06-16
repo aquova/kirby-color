@@ -97,7 +97,7 @@ function readFile(evt) {
     else {
         var fr = new FileReader();
         fr.onload = function(e) {
-            colorButton.disabled = false
+            saveButton.disabled = false
             name = f.name.split('.')[0] + "_new.gba"
             var arrayBuffer = fr.result
             rom = new Uint8Array(arrayBuffer)
@@ -106,8 +106,7 @@ function readFile(evt) {
     }
 }
 
-function rewriteColor(evt) {
-    saveButton.disabled = false
+function rewriteColor() {
     var colors = document.getElementsByClassName('jscolor')
     for (var i = 0; i < colors.length; i++) {
         var hex = parseInt(colors[i].value, 16)
@@ -121,6 +120,7 @@ function rewriteColor(evt) {
 }
 
 function writeFile(evt) {
+    rewriteColor()
     var a = document.createElement("a")
     a.download = name
     var blob = new Blob([rom], {
@@ -129,7 +129,6 @@ function writeFile(evt) {
     a.href = URL.createObjectURL(blob);
     document.body.appendChild(a)
     a.click()
-    colorButton.disabled = true
     saveButton.disabled = true
     document.body.removeChild(a)
 }
@@ -161,8 +160,5 @@ var rom;
 
 var saveButton = document.getElementById('save')
 saveButton.addEventListener('click', writeFile)
-
-var colorButton = document.getElementById('color')
-colorButton.addEventListener('click', rewriteColor)
 
 document.getElementById('fileinput').addEventListener('change', readFile, false)

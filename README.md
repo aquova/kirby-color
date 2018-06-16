@@ -12,7 +12,7 @@ This is a program to customize a Kirby ROM to any color that the user wishes. Cu
 
 ## -- Usage --
 
-To use, simply change the color pickers to the desired values, noting the changed in the live viewer. When pleased with your selection, upload a ROM (not supplied), click "Save Color" to overwrite, and then finally "Download".
+To use, simply change the color pickers to the desired values, noting the changed in the live viewer. When pleased with your selection, upload a ROM (not supplied), then click "Download".
 
 ## -- Future Features --
 
