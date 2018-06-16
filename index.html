@@ -7,35 +7,67 @@
         <script src="jscolor.js"></script>
     </head>
     <body>
-        <h1>The Kirby Color Editor!</h1>
-        <select>
-          <option value="kam">Kirby and the Amazing Mirror</option>
-        </select>
-        <div id="palette">
-            <input class="jscolor" onchange="changeColor(0, this.jscolor)" value="000000" type="button">
-            <input class="jscolor" onchange="changeColor(1, this.jscolor)" value="ffd3f7" type="button">
-            <input class="jscolor" onchange="changeColor(2, this.jscolor)" value="ffa2de" type="button">
-            <input class="jscolor" onchange="changeColor(3, this.jscolor)" value="ff92c6" type="button">
-            <input class="jscolor" onchange="changeColor(4, this.jscolor)" value="f771a5" type="button">
-            <input class="jscolor" onchange="changeColor(5, this.jscolor)" value="de4973" type="button">
-            <input class="jscolor" onchange="changeColor(6, this.jscolor)" value="b52039" type="button">
-            <input class="jscolor" onchange="changeColor(7, this.jscolor)" value="631010" type="button">
-            <input class="jscolor" onchange="changeColor(8, this.jscolor)" value="ff1884" type="button">
-            <input class="jscolor" onchange="changeColor(9, this.jscolor)" value="d60052" type="button">
-            <input class="jscolor" onchange="changeColor(10, this.jscolor)" value="b50029" type="button">
+        <div id='main'>
+            <h1>The Kirby Color Editor!</h1>
+            <select>
+              <option value="kam">Kirby and the Amazing Mirror</option>
+            </select>
+            <div id="palette">
+                <input class="jscolor" onchange="changeColor(0, this.jscolor)" value="000000" type="button">
+                <input class="jscolor" onchange="changeColor(1, this.jscolor)" value="ffd3f7" type="button">
+                <input class="jscolor" onchange="changeColor(2, this.jscolor)" value="ffa2de" type="button">
+                <input class="jscolor" onchange="changeColor(3, this.jscolor)" value="ff92c6" type="button">
+                <input class="jscolor" onchange="changeColor(4, this.jscolor)" value="f771a5" type="button">
+                <input class="jscolor" onchange="changeColor(5, this.jscolor)" value="de4973" type="button">
+                <input class="jscolor" onchange="changeColor(6, this.jscolor)" value="b52039" type="button">
+                <input class="jscolor" onchange="changeColor(7, this.jscolor)" value="631010" type="button">
+                <input class="jscolor" onchange="changeColor(8, this.jscolor)" value="ff1884" type="button">
+                <input class="jscolor" onchange="changeColor(9, this.jscolor)" value="d60052" type="button">
+                <input class="jscolor" onchange="changeColor(10, this.jscolor)" value="b50029" type="button">
+            </div>
+            <br/>
+            <canvas id="kirbyCanvas" width='320' height='288'>Your browswer does not support the HTML5 canvas.</canvas>
+            <br/>
+            <label for="presets">Presets: </label>
+            <select onchange="setPreset()" id="presets">
+              <option value="0">Default (Pink)</option>
+              <option value="1">Red</option>
+              <option value="2">Orange</option>
+              <option value="3">Yellow</option>
+              <option value="4">Green</option>
+              <option value="5">Cherry</option>
+              <option value="6">Emerald</option>
+              <option value="7">Ocean</option>
+              <option value="8">Sapphire</option>
+              <option value="9">Grape</option>
+              <option value="10">Chocolate</option>
+              <option value="11">Chalk</option>
+              <option value="12">Snow</option>
+              <option value="13">Carbon</option>
+              <option value="14">Mirror</option>
+              <option value="15">Stone</option>
+              <option value="16">Ice</option>
+              <option value="17">Meta Knight</option>
+              <option value="18">KDL3</option>
+              <!-- <option value="19">KDL3 Blue</option> -->
+              <!-- <option value="20">Waddle Dee</option> -->
+              <!-- <option value="21">Lalala</option> -->
+              <!-- <option value="22">Lololo</option> -->
+              <!-- <option value="23">Grayscale</option> -->
+            </select>
+            <br/>
+            <input type="file" id="fileinput"/>
+            <output id="name"></output>
+            <input type="button" id="color" disabled="true" value="Save Color"/>
+            <input type="button" id="save" disabled="true" value="Download"/>
+            <h3 class="left">How to use:</h3>
+            <p>Choose which color you like for each of the 11 colors present on Kirby's sprite. There are also several preset palettes, some already from <i>Amazing Mirror</i>, some brand new. Once you're happy, click 'Choose File', pick your <i>Amazing Mirror</i> ROM (not supplied), then click 'Save Color' and 'Download'.
+            <hr/>
+            <div id="footer">
+                <p>&copy; 2018 Austin Bricker</p>
+                <p>Powered by JS Color | <a href="https://github.com/aquova/KCE">Source Code</a></p>
+            </div>
+            <script src="script.js"></script>
         </div>
-        <br/>
-        <canvas id="kirbyCanvas" width='320' height='288'>Your browswer does not support the HTML5 canvas.</canvas>
-        <br/>
-        <input type="file" id="fileinput"/>
-        <output id="name"></output>
-        <input type="button" id="color" disabled="true" value="Save Color"/>
-        <input type="button" id="save" disabled="true" value="Download"/>
-        <div id="footer">
-            <p>&copy; 2018 Austin Bricker</p>
-            <p>Powered by JS Color</p>
-            <a href="https://github.com/aquova/KCE">Source Code</a>
-        </div>
-        <script src="script.js"></script>
     </body>
 </html>

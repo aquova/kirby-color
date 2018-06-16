@@ -13,6 +13,29 @@ var originalPalette = [
     [181, 0,   41 ]
 ];
 
+var presetPalletes = [
+    ["000000","FFD3F7","FFA2DE","FF92C6","F771A5","DE4973","B52039","631010","FF1884","D60052","B50029"], // Pink
+    ["000000","FFA2A5","FF0039","DE0029","B50818","B50818","6B0808","4A0000","FF00A5","DE006B","B50029"], // Red
+    ["000000","ffeb00","ffb218","ff9a18","ff7921","ff5929","c64118","842810","ff4900","c63000","842810"], // Orange
+    ["000000","fffb00","ffd300","ffb200","e7aa00","ad7900","846100","5a4900","ff1800","de1000","ad0000"], // Yellow
+    ["000000","c6fb9c","7bfb29","73eb18","63d300","399a00","297900","105900","de7100","ce4900","8c3800"], // Green
+    ["000000","ffd3f7","ff92de","ff92c6","f771a5","de4973","b52039","631010","18a25a","318252","296939"], // Cherry
+    ["000000","bdfbde","73fbbd","39d394","00a26b","008263","006952","005139","ffa24a","de7921","bd5900"], // Emerald
+    ["000000","a5fbff","8cdbff","6bbaff","529aff","2979ff","1061c6","29307b","6359ff","4a41de","3118b5"], // Ocean
+    ["000000","b5cbff","7b9aef","6382de","5271ce","0051b5","00389c","00207b","5200bd","420094","39006b"], // Sapphire
+    ["000000","cebaff","b59aff","a571ff","8c51ff","7308d6","63289c","4a206b","b54184","94206b","7b0052"], // Grape
+    ["000000","d69a8c","d68263","bd6952","9c5142","843831","6b2821","521818","9c2018","841008","730000"], // Chocolate
+    ["000000","fffbff","dedbde","bdbabd","9c9a9c","737173","525152","313031","7b797b","5a595a","424142"], // Chalk
+    ["000000","fffbff","fffbff","dedbde","bdbabd","949294","737173","525152","ff4963","d62042","b50029"], // Snow
+    ["000000","848284","737173","636163","525152","424142","393839","292829","ff9a08","ff7900","ce5100"], // Carbon
+    ["000000","8c8a8c","848284","737173","636163","525152","424142","313031","525152","393839","292829"], // Mirror
+    ["000000","efd6c6","efd6c6","cc9999","cc9999","996666","663333","393939","ff5050","cc3333","993333"], // Stone
+    ["000000","48d0f8","90f0f8","48d0f8","00a0f8","5830f8","500030","303030","780088","680058","500030"], // Ice
+    ["000000","f8f8f8","0000f8","0000f8","2000b0","2000b0","400058","400058","e80098","c00090","980078"], // Meta Knight
+    ["a85048","e87880","f0e0e8","e8d0d0","f0a0b8","e87880","d07880","a87070","e85048","e02018","b01810"]  // KDL3
+]
+
+
 var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
 ctx.msImageSmoothingEnabled = false;
@@ -68,6 +91,9 @@ function readFile(evt) {
     else if (f.name.split('.').pop() != 'gba') {
         alert(f.name + " is not a .gba file");
     }
+    else if (f.size < 0x4bb13e) {
+        alert(f.name + " is too small to be an Amazing Mirror ROM.")
+    }
     else {
         var fr = new FileReader();
         fr.onload = function(e) {
@@ -106,6 +132,15 @@ function writeFile(evt) {
     colorButton.disabled = true
     saveButton.disabled = true
     document.body.removeChild(a)
+}
+
+function setPreset() {
+    var presetIdx = Number(document.getElementById('presets').value)
+    var colors = document.getElementsByClassName('jscolor')
+    for (var i = 0; i < colors.length; i++) {
+        colors[i].jscolor.fromString(presetPalletes[presetIdx][i])
+        changeColor(i, colors[i].jscolor)
+    }
 }
 
 function rgb2gba(c) {

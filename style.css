@@ -1,5 +1,17 @@
 body {
+    font-family: Helvetica, sans-serif;
     text-align: center;
+    background-color: #4b4f65;
+}
+
+#main {
+    background-color: #ffffff;
+    width: 875px;
+    margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 1px;
+    height: auto;
 }
 
 #palette {
@@ -22,4 +34,8 @@ select {
     width: 20px;
     height: 20px;
     font-size: 0;
+}
+
+.left {
+    text-align: left;
 }
