@@ -45,7 +45,7 @@ ctx.imageSmoothingEnabled = false;
 
 var img = new Image();
 img.crossOrigin = "Anonymous";
-img.src = "http://austinbricker.com/KCE/kirby.png";
+img.src = "https://austinbricker.com/KCE/kirby.png";
 
 img.onload = function() {
     drawKirby();
