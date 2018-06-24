@@ -35,6 +35,29 @@ var presetPalletes = [
     ["a85048","e87880","f0e0e8","e8d0d0","f0a0b8","e87880","d07880","a87070","e85048","e02018","b01810"]  // KDL3
 ]
 
+kamMemLocations = [0x4bb12e]
+
+kndlMemLocations = [0xDC62A,  0xDC8AA,  0xDC96C,  0xDC9AA,  0xDCA2A,  0xDCB2A,  0xDCBAA,  0xDD0C4,  0xDD0E6,
+                    0xDD23A,  0xDD306,  0xDD34A,  0xE7418,  0xE745C,  0xE74A0,  0xE9D5C,  0xE9D7E,  0xE9ED2,
+                    0xE9F9E,  0xE9FE2,  0xF997C,  0xF997C,  0xF99C0,  0xF9A04,  0xFEFFC,  0xFF01E,  0xFF172,
+                    0xFF23E,  0xFF282,  0x108364, 0x1083A8, 0x1083EC, 0x10C260, 0x10C282, 0x10C3D6, 0x10C4A2,
+                    0x10C4E6, 0x123604, 0x123648, 0x12368C, 0x12A6DC, 0x12A6FE, 0x12A852, 0x12A91E, 0x12A962,
+                    0x137F80, 0x137FC4, 0x138008, 0x13BF44, 0x13BF66, 0x13C0BA, 0x13C186, 0x13C1CA, 0x149734,
+                    0x149778, 0x14D078, 0x14D09A, 0x14D1EE, 0x14D2BA, 0x14D2FE, 0x150320, 0x150364, 0x1503A8,
+                    0x1517E4, 0x151806, 0x15197C, 0x151A48, 0x151A8C, 0x153810, 0x153854, 0x153898, 0x1543E0,
+                    0x154402, 0x154600, 0x154644, 0x15ECE0, 0x15ED24, 0x15ED68, 0x162678, 0x16269A, 0x166CE4,
+                    0x166D06, 0x166F04, 0x166F48, 0x16FCF0, 0x16FD34, 0x16FD78, 0x172448, 0x17246A, 0x1751A0,
+                    0x1751C2, 0x175316, 0x1753E2, 0x175426, 0x17C3E4, 0x17C428, 0x1801E4, 0x180206, 0x18035A,
+                    0x180426, 0x18046A, 0x183F34, 0x183F78, 0x183FBC, 0x1845E8, 0x18460A, 0x18464E, 0x184692,
+                    0x186C7C, 0x186C9E, 0x189714, 0x189736, 0x196E48, 0x196E6A, 0x1A1890, 0x1A394C, 0x1A7818,
+                    0x1A8830, 0x1A9D94, 0x1AB300, 0x1AC5CC, 0x1AD30C, 0x1AE878, 0x1AF444, 0x1B19EC, 0x1B3E14,
+                    0x1B66FC, 0x1B6E34, 0x1BC074, 0x1BE6BE, 0x1BE8C0, 0x1BEFF8, 0x1C051C, 0x1C7260, 0x1C9890,
+                    0x1CC7EC, 0x1CC82E, 0x1CF814, 0x1D4348, 0x1D60B8, 0x1D9F20, 0x1DD060, 0x1DEF1C, 0x1E1F28,
+                    0x1E1F6A, 0x1F0074, 0x1F0096, 0x1F1F4C, 0x1F5A34, 0x1FA7E0, 0x1FB9D8, 0x1FDF58, 0x1FDF9A,
+                    0x201374, 0x203BF4, 0x2055C4, 0x20831C, 0x20B3BC, 0x20C0E8, 0x20D1E4, 0x218CD4, 0x21C3D0,
+                    0x21DEF0, 0x23F834, 0x23F988, 0x23FA54, 0x23FA98, 0x2476A0, 0x2476E4, 0x24A9FC, 0x53F4E6,
+                    0x596D22, 0x599922, 0x5BA46E, 0x5BD09A, 0x5BF426, 0x5C220E, 0x5C4AAA, 0x5C7452, 0x5C9B22,
+                    0x5CCC90, 0x5CCCD2, 0x5E2C22, 0x609D42, 0x7DB192]
 
 var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
@@ -51,6 +74,7 @@ img.onload = function() {
     drawKirby();
 }
 
+// Draw small Kirby sprite on canvas, then scale it
 function drawKirby() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, img.width, img.height);
@@ -61,6 +85,7 @@ function drawKirby() {
     originalPixelArray = Uint8ClampedArray.from(imageData.data)
 }
 
+// Iterate through pixels of Kirby image, recolor if a match
 function changeColor(oldIndex, newColor) {
     // Pixel array is four parts: R, G, B, A
     var length = originalPixelArray.length / 4;
@@ -83,6 +108,7 @@ function changeColor(oldIndex, newColor) {
     ctx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 }
 
+// Reads and verifies specified file
 function readFile(evt) {
     var f = evt.target.files[0];
     if (!f) {
@@ -91,8 +117,11 @@ function readFile(evt) {
     else if (f.name.split('.').pop() != 'gba') {
         alert(f.name + " is not a .gba file");
     }
-    else if (f.size < 0x4bb13e) {
+    else if ((game == "kam") && (f.size < kamMemLocations[kamMemLocations.length - 1])) {
         alert(f.name + " is too small to be an Amazing Mirror ROM.")
+    }
+    else if ((game == "kndl") && (f.size < kndlMemLocations[kndlMemLocations.length - 1])) {
+        alert(f.name + " is too small to be a Nightmare in Dream Land ROM.")
     }
     else {
         var fr = new FileReader();
@@ -106,6 +135,7 @@ function readFile(evt) {
     }
 }
 
+// Replace bytes in ROM with new color values
 function rewriteColor() {
     var colors = document.getElementsByClassName('jscolor')
     for (var i = 0; i < colors.length; i++) {
@@ -113,12 +143,20 @@ function rewriteColor() {
         var gba = rgb2gba(hex)
         var first = (gba >> 8) & 0xFF
         var second = gba & 0xFF
-
-        rom[0x4bb12e + (2 * i)] = second
-        rom[0x4bb12e + (2 * i) + 1] = first
+        var addresses = []
+        if (game == "kam") {
+            addresses = kamMemLocations
+        } else if (game == "kndl") {
+            addresses = kndlMemLocations
+        }
+        for (var j = 0; j < addresses.length; j++) {
+            rom[addresses[j] + (2 * i)] = second
+            rom[addresses[j] + (2 * i) + 1] = first
+        }
     }
 }
 
+// Writes and downloads the modified file
 function writeFile(evt) {
     rewriteColor()
     var a = document.createElement("a")
@@ -133,6 +171,7 @@ function writeFile(evt) {
     document.body.removeChild(a)
 }
 
+// Change palettes and redraw to chosen preset
 function setPreset() {
     var presetIdx = Number(document.getElementById('presets').value)
     var colors = document.getElementsByClassName('jscolor')
@@ -142,6 +181,7 @@ function setPreset() {
     }
 }
 
+// Utility function to convert 24-bit color to 15-bit
 function rgb2gba(c) {
     var r = (c & 0xFF0000) >> 16
     var g = (c & 0x00FF00) >> 8
@@ -155,8 +195,13 @@ function rgb2gba(c) {
     return result
 }
 
+function changeGame() {
+    game = document.getElementById('game').value
+}
+
 var name;
 var rom;
+var game = "kam"
 
 var saveButton = document.getElementById('save')
 saveButton.addEventListener('click', writeFile)

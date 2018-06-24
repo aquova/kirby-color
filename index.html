@@ -9,8 +9,10 @@
     <body>
         <div id='main'>
             <h1>The Kirby Color Editor!</h1>
-            <select>
+            <label for="game">Game: </label>
+            <select onchange="changeGame()" id='game'>
               <option value="kam">Kirby and the Amazing Mirror</option>
+              <option value="kndl">Kirby's Nightmare in Dream Land</option>
             </select>
             <div id="palette">
                 <input class="jscolor" onchange="changeColor(0, this.jscolor)" value="000000" type="button">
@@ -49,18 +51,13 @@
               <option value="16">Ice</option>
               <option value="17">Meta Knight</option>
               <option value="18">KDL3</option>
-              <!-- <option value="19">KDL3 Blue</option> -->
-              <!-- <option value="20">Waddle Dee</option> -->
-              <!-- <option value="21">Lalala</option> -->
-              <!-- <option value="22">Lololo</option> -->
-              <!-- <option value="23">Grayscale</option> -->
             </select>
             <br/>
             <input type="file" id="fileinput"/>
             <output id="name"></output>
             <input type="button" id="save" disabled="true" value="Download"/>
             <h3 class="left">How to use:</h3>
-            <p>Choose which color you like for each of the 11 colors present on Kirby's sprite. There are also several preset palettes, some already from <i>Amazing Mirror</i>, some brand new. Once you're happy, click 'Choose File', pick your <i>Amazing Mirror</i> ROM (not supplied), then click 'Download'.
+            <p>Choose which color you like for each of the 11 colors present on Kirby's sprite. There are also several preset palettes you can choose from. Once you're happy, click 'Choose File', pick the ROM based on your setting (not supplied), then click 'Download'.
             <hr/>
             <div id="footer">
                 <p>&copy; 2018 Austin Bricker</p>
