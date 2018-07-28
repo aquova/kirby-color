@@ -37,6 +37,10 @@ var presetPalletes = [
 
 kamMemLocations = [0x4bb12e]
 
+kssMemLocations = [0x467d6, 0x46c36, 0x47116, 0x47156, 0x47176, 0x47196, 0x47236, 0x47276, 0x472b6, 0x472f6,
+                   0x47336, 0x47376, 0x473b6, 0x473f6, 0x47436, 0x47476, 0x474b6, 0x474f6, 0x47536, 0x47576,
+                   0x47a16, 0x485f6, 0xfa196]
+
 kndlMemLocations = [0xDC62A,  0xDC8AA,  0xDC96C,  0xDC9AA,  0xDCA2A,  0xDCB2A,  0xDCBAA,  0xDD0C4,  0xDD0E6,
                     0xDD23A,  0xDD306,  0xDD34A,  0xE7418,  0xE745C,  0xE74A0,  0xE9D5C,  0xE9D7E,  0xE9ED2,
                     0xE9F9E,  0xE9FE2,  0xF997C,  0xF997C,  0xF99C0,  0xF9A04,  0xFEFFC,  0xFF01E,  0xFF172,
@@ -68,7 +72,11 @@ ctx.imageSmoothingEnabled = false;
 
 var img = new Image();
 img.crossOrigin = "Anonymous";
-img.src = "https://austinbricker.com/KCE/kirby.png";
+if (game == "kam" or game == "kndl") {
+    img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
+} else if (game == "kss") {
+    img.src = "https://austinbricker.com/KCE/sprites/kirby_kss.png"
+}
 
 img.onload = function() {
     drawKirby();
@@ -114,20 +122,29 @@ function readFile(evt) {
     if (!f) {
         alert("Failed to read file");
     }
-    else if (f.name.split('.').pop() != 'gba') {
-        alert(f.name + " is not a .gba file");
-    }
+    // else if (f.name.split('.').pop() != 'gba') {
+    //     alert(f.name + " is not a .gba file");
+    // }
     else if ((game == "kam") && (f.size < kamMemLocations[kamMemLocations.length - 1])) {
         alert(f.name + " is too small to be an Amazing Mirror ROM.")
     }
     else if ((game == "kndl") && (f.size < kndlMemLocations[kndlMemLocations.length - 1])) {
         alert(f.name + " is too small to be a Nightmare in Dream Land ROM.")
     }
+    else if ((game == "kss") && (f.size < kssMemLocations[kssMemLocations.length - 1])) {
+        alert(f.name + " is too small to be a Kirby Super Star ROM.")
+    }
     else {
         var fr = new FileReader();
         fr.onload = function(e) {
             saveButton.disabled = false
-            name = f.name.split('.')[0] + "_new.gba"
+            name = f.name.split('.')[0]
+            if ((game == "kam") || (game == "kndl")) {
+                name += "_new.gba"
+            }
+            else if (game == "kss") {
+                name += "_new.sfc"
+            }
             var arrayBuffer = fr.result
             rom = new Uint8Array(arrayBuffer)
         }
@@ -148,6 +165,8 @@ function rewriteColor() {
             addresses = kamMemLocations
         } else if (game == "kndl") {
             addresses = kndlMemLocations
+        } else if (game == "kss") {
+            addresses = kssMemLocations
         }
         for (var j = 0; j < addresses.length; j++) {
             rom[addresses[j] + (2 * i)] = second
