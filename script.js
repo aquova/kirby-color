@@ -72,11 +72,7 @@ ctx.imageSmoothingEnabled = false;
 
 var img = new Image();
 img.crossOrigin = "Anonymous";
-if (game == "kam" or game == "kndl") {
-    img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
-} else if (game == "kss") {
-    img.src = "https://austinbricker.com/KCE/sprites/kirby_kss.png"
-}
+img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
 
 img.onload = function() {
     drawKirby();
@@ -91,6 +87,11 @@ function drawKirby() {
 
     // Global array of original pixel values
     originalPixelArray = Uint8ClampedArray.from(imageData.data)
+
+    var colors = document.getElementsByClassName('jscolor')
+    for (var i = 0; i < colors.length; i++) {
+        changeColor(i, colors[i].jscolor)
+    }
 }
 
 // Iterate through pixels of Kirby image, recolor if a match
@@ -216,6 +217,12 @@ function rgb2gba(c) {
 
 function changeGame() {
     game = document.getElementById('game').value
+    if (game == "kam" || game == "kndl") {
+        img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
+    } else if (game == "kss") {
+        img.src = "https://austinbricker.com/KCE/sprites/kirby_kss.png";
+    }
+
 }
 
 var name;
