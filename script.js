@@ -257,8 +257,12 @@ function rgb2hex(rgb) {
 
 function displayButtons(cols) {
     var nodes = document.getElementsByClassName("jscolor")
-    for (var i = cols.length; i < nodes.length; i++) {
-        nodes[i].style.visibility = "hidden"
+    for (var i = 0; i < nodes.length; i++) {
+        if (i < cols.length) {
+            nodes[i].style.visibility = "visible"
+        } else {
+            nodes[i].style.visibility = "hidden"
+        }
     }
 }
 
@@ -274,6 +278,7 @@ function changeGame() {
         colors = originalPaletteSNES
     }
     displayButtons(colors)
+    document.getElementById("presets").selectedIndex = 0
 
     for (var i = 0; i < colors.length; i++) {
         buttons[i].jscolor.fromString(rgb2hex(colors[i]))
