@@ -1,4 +1,5 @@
-var originalPalette = [
+// Kirby's default palette in KAM and KNDL
+var originalPaletteGBA = [
 //   R    G    B
     [0,   0,   0  ],
     [255, 211, 247],
@@ -13,7 +14,23 @@ var originalPalette = [
     [181, 0,   41 ]
 ];
 
-var presetPalletes = [
+// Kirby's default palette in KSS
+var originalPaletteSNES = [
+//   R    G    B
+    [0,   0,   0  ],
+    [248, 248, 248],
+    [248, 160, 232],
+    [240, 112, 224],
+    [224, 64,  208],
+    [192, 16,  176],
+    [112, 0,   88 ],
+    [192, 0,   0  ],
+    [248, 16,  32 ],
+    [48,  48,  48 ]
+];
+
+// Table of preset color palettes
+var presetPalettes = [
     ["000000","FFD3F7","FFA2DE","FF92C6","F771A5","DE4973","B52039","631010","FF1884","D60052","B50029"], // Pink
     ["000000","FFA2A5","FF0039","DE0029","B50818","B50818","6B0808","4A0000","FF00A5","DE006B","B50029"], // Red
     ["000000","ffeb00","ffb218","ff9a18","ff7921","ff5929","c64118","842810","ff4900","c63000","842810"], // Orange
@@ -35,6 +52,7 @@ var presetPalletes = [
     ["a85048","e87880","f0e0e8","e8d0d0","f0a0b8","e87880","d07880","a87070","e85048","e02018","b01810"]  // KDL3
 ]
 
+// Memory locations of Kirby's palette in each game
 kamMemLocations = [0x4bb12e]
 
 kssMemLocations = [0x467d6, 0x46c36, 0x47116, 0x47156, 0x47176, 0x47196, 0x47236, 0x47276, 0x472b6, 0x472f6,
@@ -63,13 +81,17 @@ kndlMemLocations = [0xDC62A,  0xDC8AA,  0xDC96C,  0xDC9AA,  0xDCA2A,  0xDCB2A,  
                     0x596D22, 0x599922, 0x5BA46E, 0x5BD09A, 0x5BF426, 0x5C220E, 0x5C4AAA, 0x5C7452, 0x5C9B22,
                     0x5CCC90, 0x5CCCD2, 0x5E2C22, 0x609D42, 0x7DB192]
 
+// Get canvas to render preview
 var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
-ctx.msImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled = false;
-ctx.webkitImageSmoothingEnabled = false;
+// Depreciated?
+// ctx.msImageSmoothingEnabled = false;
+// ctx.mozImageSmoothingEnabled = false;
+// ctx.webkitImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
+// Create image object, draw Kirby sprite .png upon it
+// When first run, KAM is the selected game, so draw GBA .png
 var img = new Image();
 img.crossOrigin = "Anonymous";
 img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
@@ -99,6 +121,11 @@ function changeColor(oldIndex, newColor) {
     // Pixel array is four parts: R, G, B, A
     var length = originalPixelArray.length / 4;
     var newPixelArray = Uint8ClampedArray.from(imageData.data)
+    if (game == 'kndl' || game == 'kam') {
+        originalPalette = originalPaletteGBA
+    } else if (game == 'kss') {
+        originalPalette = originalPaletteSNES
+    }
     for (var i = 0; i < length; i++) {
         var index = 4 * i;
 
@@ -196,7 +223,7 @@ function setPreset() {
     var presetIdx = Number(document.getElementById('presets').value)
     var colors = document.getElementsByClassName('jscolor')
     for (var i = 0; i < colors.length; i++) {
-        colors[i].jscolor.fromString(presetPalletes[presetIdx][i])
+        colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
         changeColor(i, colors[i].jscolor)
     }
 }
@@ -215,14 +242,32 @@ function rgb2gba(c) {
     return result
 }
 
+// Utility function to convert RGB color to hex code as a string
+// R, G, B should all be <256
+function rgb2hex(rgb) {
+    var r = rgb[0]
+    var g = rgb[1]
+    var b = rgb[2]
+    var hex = (r << 16) | (g << 8) | b
+    return hex.toString(16)
+}
+
 function changeGame() {
     game = document.getElementById('game').value
+    var buttons = document.getElementsByClassName('jscolor')
+    var colors = []
     if (game == "kam" || game == "kndl") {
         img.src = "https://austinbricker.com/KCE/sprites/kirby_gba.png";
+        colors = originalPaletteGBA
     } else if (game == "kss") {
         img.src = "https://austinbricker.com/KCE/sprites/kirby_kss.png";
+        colors = originalPaletteSNES
     }
 
+    // TODO: If a user has manually made a color, don't change buttons. If preset has been chosen, use preset
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].jscolor.fromString(rgb2hex(colors[i]))
+    }
 }
 
 var name;

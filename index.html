@@ -10,7 +10,7 @@
         <div id='main'>
             <h1>The Kirby Color Editor!</h1>
             <label for="game">Game: </label>
-            <select onchange="changeGame()" id='game'>
+            <select onchange="changeGame()" id='game' autocomplete="off">
               <option value="kam">Kirby and the Amazing Mirror</option>
               <option value="kndl">Kirby's Nightmare in Dream Land</option>
               <option value="kss">Kirby Super Star</option>
@@ -32,7 +32,7 @@
             <canvas id="kirbyCanvas" width='320' height='288'>Your browser does not support the HTML5 canvas.</canvas>
             <br/>
             <label for="presets">Presets: </label>
-            <select onchange="setPreset()" id="presets">
+            <select onchange="setPreset()" id="presets" autocomplete="off">
               <option value="0">Default (Pink)</option>
               <option value="1">Red</option>
               <option value="2">Orange</option>
@@ -62,7 +62,7 @@
             <hr/>
             <div id="footer">
                 <p>&copy; 2018 Austin Bricker</p>
-                <p>Powered by JS Color | <a href="https://github.com/aquova/KCE">Source Code</a></p>
+                <p>Powered by <a href="http://jscolor.com/">JS Color</a> | <a href="https://github.com/aquova/KCE">Source Code</a></p>
             </div>
             <script src="script.js"></script>
         </div>
