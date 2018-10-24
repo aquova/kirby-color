@@ -84,10 +84,6 @@ kndlMemLocations = [0xDC62A,  0xDC8AA,  0xDC96C,  0xDC9AA,  0xDCA2A,  0xDCB2A,  
 // Get canvas to render preview
 var canvas = document.getElementById('kirbyCanvas');
 ctx = canvas.getContext('2d');
-// Depreciated?
-// ctx.msImageSmoothingEnabled = false;
-// ctx.mozImageSmoothingEnabled = false;
-// ctx.webkitImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
 // Create image object, draw Kirby sprite .png upon it
@@ -185,7 +181,8 @@ function readFile(evt) {
 // Replace bytes in ROM with new color values
 function rewriteColor() {
     var colors = document.getElementsByClassName('jscolor')
-    for (var i = 0; i < colors.length; i++) {
+    var pal = getPaletteForGame()
+    for (var i = 0; i < pal.length; i++) {
         var hex = parseInt(colors[i].value, 16)
         var gba = rgb2gba(hex)
         var first = (gba >> 8) & 0xFF
