@@ -111,8 +111,17 @@ function drawKirby() {
     originalPixelArray = Uint8ClampedArray.from(imageData.data)
 
     var colors = document.getElementsByClassName('jscolor')
-    for (var i = 0; i < colors.length; i++) {
+    pal = getPaletteForGame()
+    for (var i = 0; i < pal.length; i++) {
         changeColor(i, colors[i].jscolor)
+    }
+}
+
+function getPaletteForGame() {
+    if (game == 'kndl' || game == 'kam') {
+        return originalPaletteGBA
+    } else if (game == 'kss') {
+        return originalPaletteSNES
     }
 }
 
@@ -121,11 +130,7 @@ function changeColor(oldIndex, newColor) {
     // Pixel array is four parts: R, G, B, A
     var length = originalPixelArray.length / 4;
     var newPixelArray = Uint8ClampedArray.from(imageData.data)
-    if (game == 'kndl' || game == 'kam') {
-        originalPalette = originalPaletteGBA
-    } else if (game == 'kss') {
-        originalPalette = originalPaletteSNES
-    }
+    originalPalette = getPaletteForGame()
     for (var i = 0; i < length; i++) {
         var index = 4 * i;
 
@@ -150,9 +155,6 @@ function readFile(evt) {
     if (!f) {
         alert("Failed to read file");
     }
-    // else if (f.name.split('.').pop() != 'gba') {
-    //     alert(f.name + " is not a .gba file");
-    // }
     else if ((game == "kam") && (f.size < kamMemLocations[kamMemLocations.length - 1])) {
         alert(f.name + " is too small to be an Amazing Mirror ROM.")
     }
@@ -222,7 +224,8 @@ function writeFile(evt) {
 function setPreset() {
     var presetIdx = Number(document.getElementById('presets').value)
     var colors = document.getElementsByClassName('jscolor')
-    for (var i = 0; i < colors.length; i++) {
+    pal = getPaletteForGame()
+    for (var i = 0; i < pal.length; i++) {
         colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
         changeColor(i, colors[i].jscolor)
     }
@@ -252,6 +255,13 @@ function rgb2hex(rgb) {
     return hex.toString(16)
 }
 
+function displayButtons(cols) {
+    var nodes = document.getElementsByClassName("jscolor")
+    for (var i = cols.length; i < nodes.length; i++) {
+        nodes[i].style.visibility = "hidden"
+    }
+}
+
 function changeGame() {
     game = document.getElementById('game').value
     var buttons = document.getElementsByClassName('jscolor')
@@ -263,9 +273,9 @@ function changeGame() {
         img.src = "https://austinbricker.com/KCE/sprites/kirby_kss.png";
         colors = originalPaletteSNES
     }
+    displayButtons(colors)
 
-    // TODO: If a user has manually made a color, don't change buttons. If preset has been chosen, use preset
-    for (var i = 0; i < buttons.length; i++) {
+    for (var i = 0; i < colors.length; i++) {
         buttons[i].jscolor.fromString(rgb2hex(colors[i]))
     }
 }
