@@ -1,71 +1,85 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Kirby Color Editor</title>
-        <meta charset="utf-8">
-        <link href="style.css" type="text/css" rel="stylesheet">
-        <script src="jscolor.js"></script>
-    </head>
-    <body>
-        <div id='main'>
-            <h1>The Kirby Color Editor!</h1>
-            <label for="game">Game: </label>
-            <select onchange="changeGame()" id='game' autocomplete="off">
-              <option value="kam">Kirby and the Amazing Mirror</option>
-              <option value="kndl">Kirby's Nightmare in Dream Land</option>
-              <option value="kss">Kirby Super Star</option>
+
+<head>
+    <title>Kirby Color Editor</title>
+    <meta charset="utf-8">
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <script src="jscolor.js"></script>
+</head>
+
+<body>
+    <div id='main'>
+        <h1>The Kirby Color Editor!</h1>
+        <label for="game">Game: </label>
+        <select onchange="changeGame()" id='game' autocomplete="off">
+            <option value="kam">Kirby and the Amazing Mirror</option>
+            <option value="kndl">Kirby's Nightmare in Dream Land</option>
+            <option value="kss">Kirby Super Star</option>
+        </select><br/>
+        <div id="playerSelect">
+            <label for="player">Player: </label>
+            <select onchange="changePlayer()" id="player" autocomplete="off">
+                <option value="0">Player 1 (Pink)</option>
+                <option value="1">Player 2 (Red)</option>
+                <option value="2">Player 3 (Green)</option>
+                <option value="3">Player 4 (Yellow)</option>
             </select>
-            <div id="palette">
-                <!-- Must have as many buttons as the max palette size for any game -->
-                <input class="jscolor" onchange="changeColor(0, this.jscolor)" value="000000" type="button">
-                <input class="jscolor" onchange="changeColor(1, this.jscolor)" value="ffd3f7" type="button">
-                <input class="jscolor" onchange="changeColor(2, this.jscolor)" value="ffa2de" type="button">
-                <input class="jscolor" onchange="changeColor(3, this.jscolor)" value="ff92c6" type="button">
-                <input class="jscolor" onchange="changeColor(4, this.jscolor)" value="f771a5" type="button">
-                <input class="jscolor" onchange="changeColor(5, this.jscolor)" value="de4973" type="button">
-                <input class="jscolor" onchange="changeColor(6, this.jscolor)" value="b52039" type="button">
-                <input class="jscolor" onchange="changeColor(7, this.jscolor)" value="631010" type="button">
-                <input class="jscolor" onchange="changeColor(8, this.jscolor)" value="ff1884" type="button">
-                <input class="jscolor" onchange="changeColor(9, this.jscolor)" value="d60052" type="button">
-                <input class="jscolor" onchange="changeColor(10, this.jscolor)" value="b50029" type="button">
-            </div>
-            <br/>
-            <canvas id="kirbyCanvas" width='320' height='288'>Your browser does not support the HTML5 canvas.</canvas>
-            <br/>
-            <label for="presets">Presets: </label>
-            <select onchange="setPreset()" id="presets" autocomplete="off">
-              <option value="0">Default (Pink)</option>
-              <option value="1">Red</option>
-              <option value="2">Orange</option>
-              <option value="3">Yellow</option>
-              <option value="4">Green</option>
-              <option value="5">Cherry</option>
-              <option value="6">Emerald</option>
-              <option value="7">Ocean</option>
-              <option value="8">Sapphire</option>
-              <option value="9">Grape</option>
-              <option value="10">Chocolate</option>
-              <option value="11">Chalk</option>
-              <option value="12">Snow</option>
-              <option value="13">Carbon</option>
-              <option value="14">Shadow</option>
-              <option value="15">Stone</option>
-              <option value="16">Ice</option>
-              <option value="17">Meta Knight</option>
-              <option value="18">KDL3</option>
-            </select>
-            <br/>
-            <input type="file" id="fileinput"/>
-            <output id="name"></output>
-            <input type="button" id="save" disabled="true" value="Download"/>
-            <h3 class="left">How to use:</h3>
-            <p>Choose which color you like for each of the 11 colors present on Kirby's sprite. There are also several preset palettes you can choose from. Once you're happy, click 'Choose File', pick the ROM based on your setting (not supplied), then click 'Download'.
-            <hr/>
-            <div id="footer">
-                <p>&copy; 2018 Austin Bricker</p>
-                <p>Powered by <a href="http://jscolor.com/">JS Color</a> | <a href="https://github.com/aquova/KCE">Source Code</a></p>
-            </div>
-            <script src="script.js"></script>
         </div>
-    </body>
+        <div id="palette">
+            <!-- Must have as many buttons as the max palette size for any game -->
+            <input class="jscolor" onchange="changeColor(0, this.jscolor)" value="000000" type="button">
+            <input class="jscolor" onchange="changeColor(1, this.jscolor)" value="ffd3f7" type="button">
+            <input class="jscolor" onchange="changeColor(2, this.jscolor)" value="ffa2de" type="button">
+            <input class="jscolor" onchange="changeColor(3, this.jscolor)" value="ff92c6" type="button">
+            <input class="jscolor" onchange="changeColor(4, this.jscolor)" value="f771a5" type="button">
+            <input class="jscolor" onchange="changeColor(5, this.jscolor)" value="de4973" type="button">
+            <input class="jscolor" onchange="changeColor(6, this.jscolor)" value="b52039" type="button">
+            <input class="jscolor" onchange="changeColor(7, this.jscolor)" value="631010" type="button">
+            <input class="jscolor" onchange="changeColor(8, this.jscolor)" value="ff1884" type="button">
+            <input class="jscolor" onchange="changeColor(9, this.jscolor)" value="d60052" type="button">
+            <input class="jscolor" onchange="changeColor(10, this.jscolor)" value="b50029" type="button">
+        </div>
+        <br />
+        <canvas id="kirbyCanvas" width='320' height='288'>Your browser does not support the HTML5 canvas.</canvas>
+        <br />
+        <label for="presets">Presets: </label>
+        <select onchange="setPreset()" id="presets" autocomplete="off">
+            <option value="0">Pink</option>
+            <option value="1">Red</option>
+            <option value="2">Orange</option>
+            <option value="3">Yellow</option>
+            <option value="4">Green</option>
+            <option value="5">Cherry</option>
+            <option value="6">Emerald</option>
+            <option value="7">Ocean</option>
+            <option value="8">Sapphire</option>
+            <option value="9">Grape</option>
+            <option value="10">Chocolate</option>
+            <option value="11">Chalk</option>
+            <option value="12">Snow</option>
+            <option value="13">Carbon</option>
+            <option value="14">Shadow</option>
+            <option value="15">Stone</option>
+            <option value="16">Ice</option>
+            <option value="17">Meta Knight</option>
+            <option value="18">KDL3</option>
+        </select>
+        <br />
+        <input type="file" id="fileinput" />
+        <output id="name"></output>
+        <input type="button" id="save" disabled="true" value="Download" />
+        <h3 class="left">How to use:</h3>
+        <p>Choose which color you like for each of the colors present on Kirby's sprite. There are also several
+            preset palettes you can choose from. Once you're happy, click 'Choose File', pick the ROM based on your
+            setting (not supplied), then click 'Download'.</p>
+        <hr />
+        <div id="footer">
+            <p>&copy; 2018-2019 Austin Bricker</p>
+            <p>Powered by <a href="http://jscolor.com/">JS Color</a> | <a href="https://github.com/aquova/KCE">SourceCode</a></p>
+        </div>
+        <script src="script.js"></script>
+    </div>
+</body>
+
 </html>

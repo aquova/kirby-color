@@ -4,7 +4,7 @@ Kirby Color Editor
 
 https://austinbricker.com/KCE
 
-Written by Austin Bricker, 2018
+Written by Austin Bricker, 2018-2019
 
 ## -- Overview --
 
