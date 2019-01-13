@@ -168,12 +168,9 @@ function readFile(evt) {
         fr.onload = function (e) {
             saveButton.disabled = false
             name = f.name.split('.')[0]
-            if ((game == "kam") || (game == "kndl")) {
-                name += "_new.gba"
-            }
-            else if (game == "kss") {
-                name += "_new.sfc"
-            }
+            var ext = f.name.split('.')[1]
+            name += "_new." + ext
+
             var arrayBuffer = fr.result
             rom = new Uint8Array(arrayBuffer)
         }
@@ -187,7 +184,6 @@ function rewriteColor() {
     if (game == "kam") {
         for (var p = 0; p < kamMemLocations.length; p++) {
             var pal = gamePalettes[p+1] // This works currently, but may need to change
-            console.log(pal)
             var addresses = kamMemLocations[p]
             for (var i = 0; i < pal.length; i++) {
                 var hex = parseInt(pal[i], 16)
@@ -278,7 +274,8 @@ function rgb2hex(rgb) {
     var g = rgb[1]
     var b = rgb[2]
     var hex = (r << 16) | (g << 8) | b
-    return hex.toString(16)
+    var formattedHex = ("000000" + hex.toString(16)).slice(-6) // This ensures a 6-digit hex string
+    return formattedHex
 }
 
 // Shows the proper number of buttons for the given game
