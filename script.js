@@ -1,10 +1,16 @@
+// These are the original colors for the Kirby sprite images
+var originalPalettes = [
+    ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KNDL and KAM
+    ["000000", "f8f8f8", "f8a0e8", "f070e0", "e040d0", "c010b0", "700058", "c00000", "f81020", "303030"] // KSS
+]
+
 // The current colors for each of the games
 var gamePalettes = [
     ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KNDL
     ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KAM P1
-    ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KAM P2
-    ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KAM P3
-    ["000000", "ffd3f7", "ffa2de", "ff92c6", "f771a5", "de4973", "b52039", "631010", "ff1884", "d60052", "b50029"], // KAM P4
+    ["000000", "fffb00", "ffd300", "ffb200", "e7aa00", "ad7900", "846100", "5a4900", "ff1800", "de1000", "ad0000"], // KAM P2
+    ["000000", "FFA2A5", "FF0039", "DE0029", "B50818", "B50818", "6B0808", "4A0000", "FF00A5", "DE006B", "B50029"], // KAM P3
+    ["000000", "c6fb9c", "7bfb29", "73eb18", "63d300", "399a00", "297900", "105900", "de7100", "ce4900", "8c3800"], // KAM P4
     ["000000", "f8f8f8", "f8a0e8", "f070e0", "e040d0", "c010b0", "700058", "c00000", "f81020", "303030"] // KSS
 ]
 
@@ -32,7 +38,11 @@ var presetPalettes = [
 ]
 
 // Memory locations of Kirby's palette in each game
-kamMemLocations = [0x4bb12e]
+kamMemLocationsP1 = [0x4bb12e]
+kamMemLocationsP2 = [0x4bb1ae]
+kamMemLocationsP3 = [0x4bb1ce]
+kamMemLocationsP4 = [0x4bb1ee]
+kamMemLocations = [kamMemLocationsP1, kamMemLocationsP2, kamMemLocationsP3, kamMemLocationsP4]
 
 kssMemLocations = [0x467d6, 0x46c36, 0x47116, 0x47156, 0x47176, 0x47196, 0x47236, 0x47276, 0x472b6, 0x472f6,
     0x47336, 0x47376, 0x473b6, 0x473f6, 0x47436, 0x47476, 0x474b6, 0x474f6, 0x47536, 0x47576,
@@ -97,7 +107,8 @@ function getPaletteForGame() {
     if (game == 'kndl') {
         return gamePalettes[0]
     } else if (game == 'kam') {
-        return gamePalettes[1]
+        var player = Number(document.getElementById("player").value)
+        return gamePalettes[player]
     } else if (game == 'kss') {
         return gamePalettes[5]
     }
@@ -105,10 +116,19 @@ function getPaletteForGame() {
 
 // Iterate through pixels of Kirby image, recolor if a match
 function changeColor(oldIndex, newColor) {
+    // First, set the newColor for the current game's array
+    var currentPalette = getPaletteForGame()
+    currentPalette[oldIndex] = rgb2hex(newColor.rgb)
+
     // Pixel array is four parts: R, G, B, A
     var length = originalPixelArray.length / 4;
     var newPixelArray = Uint8ClampedArray.from(imageData.data)
-    originalPalette = getPaletteForGame()
+    if (game == 'kam' || game == 'kndl') {
+        var originalPalette = originalPalettes[0]
+    } else if (game == "kss") {
+        var originalPalette = originalPalettes[1]
+    }
+
     for (var i = 0; i < length; i++) {
         var index = 4 * i;
 
@@ -134,7 +154,7 @@ function readFile(evt) {
     if (!f) {
         alert("Failed to read file");
     }
-    else if ((game == "kam") && (f.size < kamMemLocations[kamMemLocations.length - 1])) {
+    else if ((game == "kam") && (f.size < kamMemLocationsP1[kamMemLocationsP1.length - 1])) {
         alert(f.name + " is too small to be an Amazing Mirror ROM.")
     }
     else if ((game == "kndl") && (f.size < kndlMemLocations[kndlMemLocations.length - 1])) {
@@ -163,24 +183,39 @@ function readFile(evt) {
 
 // Replace bytes in ROM with new color values
 function rewriteColor() {
-    var colors = document.getElementsByClassName('jscolor')
-    var pal = getPaletteForGame()
-    for (var i = 0; i < pal.length; i++) {
-        var hex = parseInt(colors[i].value, 16)
-        var gba = rgb2gba(hex)
-        var first = (gba >> 8) & 0xFF
-        var second = gba & 0xFF
-        var addresses = []
-        if (game == "kam") {
-            addresses = kamMemLocations
-        } else if (game == "kndl") {
+    // In KAM, need to write for all 4 players
+    if (game == "kam") {
+        for (var p = 0; p < kamMemLocations.length; p++) {
+            var pal = gamePalettes[p+1] // This works currently, but may need to change
+            console.log(pal)
+            var addresses = kamMemLocations[p]
+            for (var i = 0; i < pal.length; i++) {
+                var hex = parseInt(pal[i], 16)
+                var gba = rgb2gba(hex)
+                var first = (gba >> 8) & 0xFF
+                var second = gba & 0xFF
+                for (var j = 0; j < addresses.length; j++) {
+                    rom[addresses[j] + (2 * i)] = second
+                    rom[addresses[j] + (2 * i) + 1] = first
+                }
+            }
+        }
+    } else {
+        var pal = getPaletteForGame()
+        if (game == "kndl") {
             addresses = kndlMemLocations
         } else if (game == "kss") {
             addresses = kssMemLocations
         }
-        for (var j = 0; j < addresses.length; j++) {
-            rom[addresses[j] + (2 * i)] = second
-            rom[addresses[j] + (2 * i) + 1] = first
+        for (var i = 0; i < pal.length; i++) {
+            var hex = parseInt(pal[i], 16)
+            var gba = rgb2gba(hex)
+            var first = (gba >> 8) & 0xFF
+            var second = gba & 0xFF
+            for (var j = 0; j < addresses.length; j++) {
+                rom[addresses[j] + (2 * i)] = second
+                rom[addresses[j] + (2 * i) + 1] = first
+            }
         }
     }
 }
@@ -204,17 +239,13 @@ function writeFile(evt) {
 function setPreset() {
     var presetIdx = Number(document.getElementById('presets').value)
     var colors = document.getElementsByClassName('jscolor')
-    pal = getPaletteForGame()
+    var pal = getPaletteForGame()
+    pal = presetPalettes[presetIdx]
+
     for (var i = 0; i < pal.length; i++) {
         colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
         changeColor(i, colors[i].jscolor)
     }
-}
-
-// When player change, save the colors from previous player, then load current player
-function changePlayer() {
-    var playerVal = Number(document.getElementById("player").value)
-
 }
 
 // Utility function to convert 24-bit color to 15-bit
@@ -238,6 +269,16 @@ function hex2rgb(c) {
     var b = c.substring(4, 6)
 
     return [parseInt(r, 16), parseInt(g, 16), parseInt(b, 16)]
+}
+
+// Utility function to convert RGB color to hex code as a string
+// R, G, B should all be <256
+function rgb2hex(rgb) {
+    var r = rgb[0]
+    var g = rgb[1]
+    var b = rgb[2]
+    var hex = (r << 16) | (g << 8) | b
+    return hex.toString(16)
 }
 
 // Shows the proper number of buttons for the given game
