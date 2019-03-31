@@ -4,7 +4,7 @@
     <title>Kirby Color Editor</title>
     <meta charset="utf-8">
     <link href="style.css" type="text/css" rel="stylesheet">
-    <script src="jscolor.js"></script>
+    <script src="lib/jscolor.js"></script>
 </head>
 <body>
     <div id='main'>
@@ -63,6 +63,8 @@
             <option value="17">Meta Knight</option>
             <option value="18">KDL3</option>
         </select>
+        <br/>
+        <input type="button" id="random" value="Random Color" />
         <br />
         <input type="file" id="fileinput" />
         <output id="name"></output>
@@ -71,12 +73,14 @@
         <p>Choose which color you like for each of the colors present on Kirby's sprite. There are also several
             preset palettes you can choose from. Once you're happy, click 'Choose File', pick the ROM based on your
             setting (not supplied), then click 'Download'.</p>
+        <p>The 'Random Color' button mixes and matches colors for Kirby's feet and body, to give a different look everytime.</p>
         <hr />
         <div id="footer">
             <p>&copy; 2018-2019 Austin Bricker</p>
             <p>Color Selection via <a href="http://jscolor.com/">JS Color</a> | <a href="https://github.com/aquova/KCE">Source Code</a></p>
         </div>
-        <script src="script.js"></script>
+        <script src="js/utilities.js"></script>
+        <script src="js/main.js"></script>
     </div>
 </body>
 </html>
