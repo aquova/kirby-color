@@ -4,6 +4,8 @@ Kirby Color Editor
 
 https://austinbricker.com/KCE
 
+https://github.com/aquova/KCE
+
 Written by Austin Bricker, 2018-2019
 
 ## -- Overview --
@@ -23,7 +25,7 @@ To use, simply change the color pickers to the desired values, noting the change
 ## -- Future Features --
 
 - The ability to export/import color palettes into the editor
-- Color editing for multiplayer Kirbys in Amazing Mirror
+- Presets for body and feet
 - Meta Knight palette editing
 - SNES games: Kirby's Dream Course, Kirby Dream Land 3
 - NES games: Kirby's Adventure
