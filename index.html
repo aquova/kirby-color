@@ -38,34 +38,17 @@
             <input class="jscolor" onchange="changeColor(9, this.jscolor)" value="d60052" type="button">
             <input class="jscolor" onchange="changeColor(10, this.jscolor)" value="b50029" type="button">
         </div>
-        <br />
+        <br/>
         <canvas id="kirbyCanvas" width='320' height='288'>Your browser does not support the HTML5 canvas.</canvas>
-        <br />
+        <br/>
         <label for="presets">Presets: </label>
-        <select onchange="setPreset()" id="presets" autocomplete="off">
-            <option value="0">Pink</option>
-            <option value="1">Red</option>
-            <option value="2">Orange</option>
-            <option value="3">Yellow</option>
-            <option value="4">Green</option>
-            <option value="5">Cherry</option>
-            <option value="6">Emerald</option>
-            <option value="7">Ocean</option>
-            <option value="8">Sapphire</option>
-            <option value="9">Grape</option>
-            <option value="10">Chocolate</option>
-            <option value="11">Chalk</option>
-            <option value="12">Snow</option>
-            <option value="13">Carbon</option>
-            <option value="14">Shadow</option>
-            <option value="15">Stone</option>
-            <option value="16">Ice</option>
-            <option value="17">Meta Knight</option>
-            <option value="18">KDL3</option>
-        </select>
+        <select onchange="setPreset()" id="presets" autocomplete="off"></select>
+        <br/>
+        <select onchange="setBody()" id="body" autocomplete="off"></select>
+        <select onchange="setFeet()" id="feet" autocomplete="off"></select>
         <br/>
         <input type="button" id="random" value="Random Color" />
-        <br />
+        <br/>
         <input type="file" id="fileinput" />
         <output id="name"></output>
         <input type="button" id="save" disabled="true" value="Download" />
@@ -76,7 +59,7 @@
         <p>The 'Random Color' button mixes and matches colors for Kirby's feet and body, to give a different look everytime.</p>
         <hr />
         <div id="footer">
-            <p>&copy; 2018-2019 Austin Bricker</p>
+            <p>&copy; 2018-2020 Austin Bricker</p>
             <p>Color Selection via <a href="http://jscolor.com/">JS Color</a> | <a href="https://github.com/aquova/KCE">Source Code</a></p>
         </div>
         <script src="js/utilities.js"></script>

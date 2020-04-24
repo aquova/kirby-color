@@ -37,6 +37,29 @@ var presetPalettes = [
     ["a85048", "e87880", "f0e0e8", "e8d0d0", "f0a0b8", "e87880", "d07880", "a87070", "e85048", "e02018", "b01810"]  // KDL3
 ]
 
+// The names of each color, for the drop down menus
+colorNames = [
+    "Pink",
+    "Red",
+    "Orange",
+    "Yellow",
+    "Green",
+    "Cherry",
+    "Emerald",
+    "Ocean",
+    "Sapphire",
+    "Grape",
+    "Chocolate",
+    "Chalk",
+    "Snow",
+    "Carbon",
+    "Shadow",
+    "Stone",
+    "Ice",
+    "Meta Knight",
+    "KDL3",
+]
+
 // Memory locations of Kirby's palette in each game
 kamMemLocationsP1 = [0x4bb12e]
 kamMemLocationsP2 = [0x4bb1ae]
@@ -243,6 +266,31 @@ function setPreset() {
     }
 }
 
+// TODO: Merge this with setPreset
+function setBody() {
+    var presetIdx = Number(document.getElementById('body').value)
+    var colors = document.getElementsByClassName('jscolor')
+    var pal = getPaletteForGame()
+    pal = presetPalettes[presetIdx]
+
+    for (var i = 0; i < pal.length - 3; i++) {
+        colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
+        changeColor(i, colors[i].jscolor)
+    }
+}
+
+function setFeet() {
+    var presetIdx = Number(document.getElementById('feet').value)
+    var colors = document.getElementsByClassName('jscolor')
+    var pal = getPaletteForGame()
+    pal = presetPalettes[presetIdx]
+
+    for (var i = pal.length - 3; i < pal.length; i++) {
+        colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
+        changeColor(i, colors[i].jscolor)
+    }
+}
+
 // Randomly picks a body and foot color from two different presets
 function randomizeColor() {
     var col1 = randomChoice(presetPalettes)
@@ -298,6 +346,15 @@ function changeGame() {
     }
 }
 
+function populatePresets(element) {
+    for (i = 0; i < colorNames.length; i++) {
+        var opt = document.createElement('option')
+        opt.value = i
+        opt.innerHTML = colorNames[i]
+        element.appendChild(opt)
+    }
+}
+
 var name
 var rom
 var game = "kam"
@@ -307,3 +364,7 @@ saveButton.addEventListener('click', writeFile)
 
 document.getElementById('fileinput').addEventListener('change', readFile, false)
 document.getElementById('random').addEventListener('click', randomizeColor)
+
+populatePresets(document.getElementById('presets'))
+populatePresets(document.getElementById('body'))
+populatePresets(document.getElementById('feet'))
