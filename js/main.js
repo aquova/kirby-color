@@ -255,10 +255,13 @@ function writeFile(evt) {
 
 // Change palettes and redraw to chosen preset
 function setPreset() {
-    var presetIdx = Number(document.getElementById('presets').value)
+    var presetIdx = Number(presetList.value)
     var colors = document.getElementsByClassName('jscolor')
     var pal = getPaletteForGame()
     pal = presetPalettes[presetIdx]
+
+    bodyList.value = presetIdx
+    feetList.value = presetIdx
 
     for (var i = 0; i < pal.length; i++) {
         colors[i].jscolor.fromString(presetPalettes[presetIdx][i])
@@ -268,7 +271,7 @@ function setPreset() {
 
 // TODO: Merge this with setPreset
 function setBody() {
-    var presetIdx = Number(document.getElementById('body').value)
+    var presetIdx = Number(bodyList.value)
     var colors = document.getElementsByClassName('jscolor')
     var pal = getPaletteForGame()
     pal = presetPalettes[presetIdx]
@@ -280,7 +283,7 @@ function setBody() {
 }
 
 function setFeet() {
-    var presetIdx = Number(document.getElementById('feet').value)
+    var presetIdx = Number(feetList.value)
     var colors = document.getElementsByClassName('jscolor')
     var pal = getPaletteForGame()
     pal = presetPalettes[presetIdx]
@@ -365,6 +368,9 @@ saveButton.addEventListener('click', writeFile)
 document.getElementById('fileinput').addEventListener('change', readFile, false)
 document.getElementById('random').addEventListener('click', randomizeColor)
 
-populatePresets(document.getElementById('presets'))
-populatePresets(document.getElementById('body'))
-populatePresets(document.getElementById('feet'))
+var presetList = document.getElementById('presets')
+var bodyList = document.getElementById('body')
+var feetList = document.getElementById('feet')
+populatePresets(presetList)
+populatePresets(bodyList)
+populatePresets(feetList)

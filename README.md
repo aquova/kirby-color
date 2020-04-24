@@ -1,12 +1,12 @@
-# KCE
+# kirby-color
 
 Kirby Color Editor
 
-https://austinbricker.com/KCE
+https://aquova.net/kirby-color
 
-https://github.com/aquova/KCE
+https://github.com/aquova/kirby-color
 
-Written by Austin Bricker, 2018-2019
+Written by Austin Bricker, 2018-2020
 
 ## -- Overview --
 
